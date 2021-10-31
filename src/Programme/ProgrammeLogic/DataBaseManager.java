@@ -102,9 +102,9 @@ public class DataBaseManager {
             if (groupID != 0){
                 statement.execute(String.format("INSERT INTO students ('id', 'student_name', 'student_surname', 'student_birthday', 'student_group')" +
                         " VALUES (%d, '%s', '%s', '%s', %d);", student.getId(), student.getName(), student.getSurname(), student.getBirthday(), groupID));
-                data = statement.executeQuery("SELECT MAX(id) FROM students;");
+                data = statement.executeQuery(String.format("SELECT id FROM students WHERE id = %s", student.getId()));
                 while (data.next()){
-                    result.setValue(data.getInt("MAX(id)"));
+                    result.setValue(data.getInt("id"));
                 }
             }
             else{
