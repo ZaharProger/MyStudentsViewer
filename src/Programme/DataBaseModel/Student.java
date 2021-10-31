@@ -47,6 +47,10 @@ public class Student {
         return group;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -55,7 +59,7 @@ public class Student {
         this.surname = surname;
     }
 
-    public void setBirthday(String birthday) {
+    public void setBirthday(String birthday){
         this.birthday = birthday;
     }
 

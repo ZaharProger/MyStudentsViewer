@@ -5,6 +5,9 @@ public class Group {
     private int id;
     private String name;
 
+    public Group()
+    {}
+
     public Group(int id, String name){
         this.id = id;
         this.name = name;
@@ -13,6 +16,14 @@ public class Group {
     public Group(Group group){
         id = group.id;
         name = group.name;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getId() {
