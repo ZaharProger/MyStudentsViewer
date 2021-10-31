@@ -8,7 +8,7 @@ import java.sql.*;
 
 //Менеджер по работе с БД (логика работы с БД)
 public class DataBaseManager {
-    private static final String CONNECTION_ADDRESS = "jdbc:sqlite:C:./students_database.db";
+    private static final String CONNECTION_ADDRESS = "jdbc:sqlite:./students_database.db";
     private static DataBaseManager manager = null;
     private Connection connection;
 
