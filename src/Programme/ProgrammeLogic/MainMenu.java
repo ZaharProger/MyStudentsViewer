@@ -24,6 +24,7 @@ public class MainMenu {
                         5. Добавление группы
                         6. Удаление студента
                         7. Удаление группы
+                        8. Вывод информации о скрытых студентах
                         0. Выход
                         """);
                 System.out.print("Введите здесь: ");
@@ -123,6 +124,19 @@ public class MainMenu {
                     System.out.print("Введите ID для удаления: ");
                     String userData = in.nextLine();
                     System.out.println(manager.removeGroup(Integer.parseInt(userData)).getMessage());
+                }
+                else if (Byte.parseByte(choice) == 8){
+                    manager.checkIfOpen();
+                    ProgrammeResult<TableData<Student>> readingResult = manager.readHiddenData();
+                    if (readingResult.getSuccessStatus()){
+                        System.out.println(readingResult.getValue().getTableHead());
+                        for (Student student : readingResult.getValue().getData()) {
+                            System.out.println(student.toString());
+                        }
+                    }
+                    else{
+                        System.out.println(readingResult.getMessage());
+                    }
                 }
                 else if (Byte.parseByte(choice) == 0) {
                     if (manager != null){
