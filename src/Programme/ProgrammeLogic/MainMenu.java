@@ -22,6 +22,8 @@ public class MainMenu {
                         3. Вывод информации о группах
                         4. Добавление студента
                         5. Добавление группы
+                        6. Удаление студента
+                        7. Удаление группы
                         0. Выход
                         """);
                 System.out.print("Введите здесь: ");
@@ -110,6 +112,18 @@ public class MainMenu {
                         System.out.println(insertionResult.getMessage());
                     }
                 }
+                else if (Byte.parseByte(choice) == 6){
+                    manager.checkIfOpen();
+                    System.out.print("Введите ID для удаления: ");
+                    String userData = in.nextLine();
+                    System.out.println(manager.removeStudent(Integer.parseInt(userData)).getMessage());
+                }
+                else if (Byte.parseByte(choice) == 7){
+                    manager.checkIfOpen();
+                    System.out.print("Введите ID для удаления: ");
+                    String userData = in.nextLine();
+                    System.out.println(manager.removeGroup(Integer.parseInt(userData)).getMessage());
+                }
                 else if (Byte.parseByte(choice) == 0) {
                     if (manager != null){
                         System.out.println(manager.closeDataBase().getMessage());
@@ -126,6 +140,8 @@ public class MainMenu {
             catch (NullPointerException exception){
                 System.out.println("База данных не открыта!");
             }
+            System.out.print("Нажмите Enter для продолжения: ");
+            in.nextLine();
         }
 
         return isFinished;

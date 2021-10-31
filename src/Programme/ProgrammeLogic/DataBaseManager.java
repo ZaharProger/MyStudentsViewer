@@ -139,6 +139,53 @@ public class DataBaseManager {
         return result;
     }
 
+    public ProgrammeResult<String> removeStudent(int id){
+        ProgrammeResult<String> result = new ProgrammeResult<>();
+        try (Statement statement = connection.createStatement()){
+            ResultSet data = statement.executeQuery(String.format("SELECT id FROM students WHERE id = %d;", id));
+            if (data.next()){
+                statement.execute(String.format("DELETE FROM students WHERE id = %d;", id));
+                result.setMessage("Информация о студенте успешно удалена!");
+                result.setSuccessStatus(true);
+            }
+            else{
+                result.setMessage("Информация о студенте не найдена!");
+                result.setSuccessStatus(false);
+            }
+            result.setValue("");
+        }
+        catch(SQLException exception){
+            System.out.println(exception.getMessage());
+        }
+
+        return result;
+    }
+
+    public ProgrammeResult<String> removeGroup(int id){
+        ProgrammeResult<String> result = new ProgrammeResult<>();
+        try (Statement statement = connection.createStatement()){
+            ResultSet data = statement.executeQuery(String.format("SELECT id FROM groups WHERE id = %d;", id));
+            if (data.next()){
+                statement.execute(String.format("DELETE FROM groups WHERE id = %d;", id));
+                result.setMessage("""
+                        Информация о группе успешно удалена!
+                        Студенты принадлежащие данной группе скрыты
+                        Для их отображения определите их в существующую группу!""");
+                result.setSuccessStatus(true);
+            }
+            else{
+                result.setMessage("Информация о группе не найдена!");
+                result.setSuccessStatus(false);
+            }
+            result.setValue("");
+        }
+        catch(SQLException exception){
+            System.out.println(exception.getMessage());
+        }
+
+        return result;
+    }
+
     public ProgrammeResult<String> closeDataBase(){
         ProgrammeResult<String> result = new ProgrammeResult<>("База данных успешно закрыта!", true, "");
         try{
