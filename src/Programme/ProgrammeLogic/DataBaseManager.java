@@ -47,7 +47,6 @@ public class DataBaseManager {
                                      data.getString("student_birthday"), data.getString("group_name")));
             }
             if (list.isEmpty()){
-                System.out.println(2);
                 result.setMessage("База данных пуста!");
                 result.setSuccessStatus(false);
             }
@@ -191,7 +190,7 @@ public class DataBaseManager {
         ProgrammeResult<TableData<Student>> result = new ProgrammeResult<>("Чтение успешно завершено!", true, new TableData<>());
         ArrayList<Student> list = new ArrayList<>();
         try (Statement statement = connection.createStatement()) {
-            ResultSet data = statement.executeQuery("SELECT students.id, student_name, student_surname, student_birthday, student_group " +
+            ResultSet data = statement.executeQuery("SELECT id, student_name, student_surname, student_birthday, student_group " +
                     "FROM students WHERE student_group = 0;");
             result.getValue().createTableHead(data.getMetaData());
             while (data.next()){
@@ -199,8 +198,67 @@ public class DataBaseManager {
                         data.getString("student_birthday"), "Не указано"));
             }
             if (list.isEmpty()){
-                System.out.println(2);
                 result.setMessage("В базе данных нет скрытых записей!");
+                result.setSuccessStatus(false);
+            }
+            else{
+                result.getValue().setData(list);
+            }
+        }
+        catch (SQLException exception){
+            System.out.println(exception.getMessage());
+            result.setMessage("Ошибка при чтении базы данных!");
+            result.setSuccessStatus(false);
+        }
+
+        return result;
+    }
+
+    public ProgrammeResult<TableData<Student>> findStudent(int id) {
+        ProgrammeResult<TableData<Student>> result = new ProgrammeResult<>("Чтение успешно завершено!", true, new TableData<>());
+        ArrayList<Student> list = new ArrayList<>();
+        try (Statement statement = connection.createStatement()) {
+            ResultSet data = statement.executeQuery(String.format("SELECT * " +
+                    "FROM students WHERE id = %d;", id));
+            result.getValue().createTableHead(data.getMetaData());
+            while (data.next()){
+                if (data.getInt("student_group") != 0)
+                    list.add(new Student(data.getInt("id"), data.getString("student_name"), data.getString("student_surname"),
+                            data.getString("student_birthday"), data.getString("student_group")));
+                else
+                    list.add(new Student(data.getInt("id"), data.getString("student_name"), data.getString("student_surname"),
+                            data.getString("student_birthday"), "Не указано"));
+            }
+
+            if (list.isEmpty()){
+                result.setMessage(String.format("В базе данных не существует студента по id: %d!", id));
+                result.setSuccessStatus(false);
+            }
+            else{
+                result.getValue().setData(list);
+            }
+        }
+        catch (SQLException exception){
+            System.out.println(exception.getMessage());
+            result.setMessage("Ошибка при чтении базы данных!");
+            result.setSuccessStatus(false);
+        }
+
+        return result;
+    }
+
+    public ProgrammeResult<TableData<Group>> findGroup(int id) {
+        ProgrammeResult<TableData<Group>> result = new ProgrammeResult<>("Чтение успешно завершено!", true, new TableData<>());
+        ArrayList<Group> list = new ArrayList<>();
+        try (Statement statement = connection.createStatement()) {
+            ResultSet data = statement.executeQuery(String.format("SELECT * " +
+                    "FROM groups WHERE id = %d;", id));
+            result.getValue().createTableHead(data.getMetaData());
+            while (data.next()){
+                list.add(new Group(data.getInt("id"), data.getString("group_name")));
+            }
+            if (list.isEmpty()){
+                result.setMessage(String.format("В базе данных не существует группы по id: %d!", id));
                 result.setSuccessStatus(false);
             }
             else{
@@ -231,8 +289,7 @@ public class DataBaseManager {
     }
 
     //Метод для проверки существования БД
-    public void checkIfOpen() throws NullPointerException{
+    public void checkIfOpen() throws NullPointerException {
         manager.toString();
     }
-
 }
